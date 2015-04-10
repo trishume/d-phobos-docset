@@ -11,8 +11,10 @@ Dir[File.join(basedir,"*")].each do |f|
   page_name = doc.at_css(".hyphenate > h1").text
   relpath = f[reldir.length+1..-1]
   out.puts "INSERT OR IGNORE INTO searchIndex(name, type, path) VALUES ('#{page_name}', 'Module', '#{relpath}');"
-  doc.css(".d_decl > .ddoc_psymbol").each do |el|
-    name = el.text
-    out.puts "INSERT OR IGNORE INTO searchIndex(name, type, path) VALUES ('#{name}', 'Function', '#{relpath}#.#{name}');"
+  doc.css(".d_decl > a").each do |el|
+    anchor = el["name"]
+    next unless anchor.start_with?(".")
+    name = anchor[1..-1]
+    out.puts "INSERT OR IGNORE INTO searchIndex(name, type, path) VALUES ('#{name}', 'Function', '#{relpath}##{anchor}');"
   end
 end
