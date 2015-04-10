@@ -14,3 +14,8 @@ task :gen do
   rm SQLITE_DB if File.exist?(SQLITE_DB)
   sh "sqlite3 #{SQLITE_DB} < index.sql"
 end
+
+task :archive do
+  sh "tar --exclude='.DS_Store' -cvzf D.tgz D.docset"
+  sh "zip -r D.docset.zip D.docset"
+end
