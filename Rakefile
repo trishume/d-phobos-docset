@@ -1,5 +1,5 @@
 task :download do
-  sh "wget --recursive --page-requisites --html-extension --convert-links --restrict-file-names=windows --domains dlang.org --no-parent http://dlang.org/phobos/"
+  sh "wget --recursive --page-requisites --html-extension --convert-links --restrict-file-names=windows --domains dlang.org --no-parent http://dlang.org/phobos/ || true"
   mkdir_p "D.docset/Contents/Resources/"
   mv "dlang.org", "D.docset/Contents/Resources/Documents"
 end
@@ -18,4 +18,8 @@ end
 task :archive do
   sh "tar --exclude='.DS_Store' -cvzf D.tgz D.docset"
   sh "zip -r D.docset.zip D.docset"
+end
+
+task :clean do
+  rm_r "D.docset/Contents/Resources/Documents"
 end
